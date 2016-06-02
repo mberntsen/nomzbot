@@ -1,7 +1,7 @@
 #!/usr/bin/python
-"""Space-state monitoring plugin for IRC bot."""
-__author__ = 'Rudi Daemen <info@kratjebierhosting.nl>'
-__version__ = '0.2'
+"""help plugin for IRC bot."""
+__author__ = 'Martijn Berntsen <mxberntsen@gmail.com>'
+__version__ = '0.1'
 
 # Standard modules
 import urllib2

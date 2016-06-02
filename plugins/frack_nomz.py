@@ -1,7 +1,7 @@
 #!/usr/bin/python
-"""Space-state monitoring plugin for IRC bot."""
-__author__ = 'Rudi Daemen <info@kratjebierhosting.nl>'
-__version__ = '0.2'
+"""Spacenomz planning plugin for IRC bot."""
+__author__ = 'Martijn Berntsen <mxberntsen@gmail.com>'
+__version__ = '0.1'
 
 # Standard modules
 import urllib2
@@ -10,6 +10,7 @@ import time
 import simplejson
 import re
 from datetime import datetime, date
+import copy
 
 # Custom modules
 import messages
@@ -52,7 +53,7 @@ class Plugin(plugins.Base):
     f.close()
 
   def loadToday(self, server=None):
-    self.schedule['vandaag'] = self.schedule[DAY_NUMBER_TO_NAME[self.date.weekday()]]
+    self.schedule['vandaag'] = copy.deepcopy(self.schedule[DAY_NUMBER_TO_NAME[self.date.weekday()]])
     if server is not None:
       server.SendMessage('#avondeten', 'whoa, nieuwe dag, nieuwe eters!', None)
 
@@ -147,10 +148,16 @@ class Plugin(plugins.Base):
           server.SendMessage(message.channel, '%-9s: niemand' % day, message.nick)
         else:
           server.SendMessage(message.channel, '%-9s: er eten %d mensen mee, te weten: %s' % (day, totaal, wiestring), message.nick)
+    elif message.content == '!nomz wat':
+      request = urllib2.Request('http://www.receptenvandaag.nl/random')
+      opener = urllib2.build_opener()
+      f = opener.open(request)
+      server.SendMessage(message.channel, 'wat dacht je van: %s' % f.url, message.nick)
     elif message.content == '!nomz help':
       server.SendMessage(message.channel, 'aanmelden/afmelden voor vandaag: !nomz +1/-1', None)
       server.SendMessage(message.channel, 'voor vaste dagen, dag toevoegen (bijv dinsdag): !nomz +1/-1 dinsdag', None)
       server.SendMessage(message.channel, 'vaste eters bekijken: !nomz planning', None)
       server.SendMessage(message.channel, 'wie eten er vandaag mee?: !nomz wie', None)
+      server.SendMessage(message.channel, 'wat eten we vandaag?: !nomz wat', None)
     
 
