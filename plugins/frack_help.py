@@ -36,6 +36,6 @@ class Plugin(plugins.Base):
             and message.content.startswith(TRIGGER))
 
   def Process(self, server, message):
-    server.SendMessage(message.channel, '/me houd %s\'s handje vast' % (message.nick), None)
+    server.SendMessage(message.channel, '/me houdt %ss handje vast' % (message.nick), None)
       
 
